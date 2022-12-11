@@ -59,7 +59,7 @@ def create():
 def modify(question_id):
     question = Question.query.get_or_404(question_id)
     if g.user != question.user:
-        flash('수정권한이 없습니다')
+        flash('No authority to modify')
         return redirect(url_for('question.detail', question_id=question_id))
     if request.method == 'POST':  # POST 요청
         form = QuestionForm()
@@ -78,7 +78,7 @@ def modify(question_id):
 def delete(question_id):
     question = Question.query.get_or_404(question_id)
     if g.user != question.user:
-        flash('삭제권한이 없습니다')
+        flash('No authority to delete')
         return redirect(url_for('question.detail', question_id=question_id))
     db.session.delete(question)
     db.session.commit()
@@ -90,7 +90,7 @@ def delete(question_id):
 def vote(question_id):
     _question = Question.query.get_or_404(question_id)
     if g.user == _question.user:
-        flash('본인이 작성한 글은 추천할수 없습니다')
+        flash('Cannot recommend yours')
     else:
         _question.voter.append(g.user)
         db.session.commit()
