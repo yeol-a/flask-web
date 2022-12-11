@@ -24,7 +24,7 @@ def signup():
             db.session.commit()
             return redirect(url_for('main.index'))
         else:
-            flash('이미 존재하는 사용자입니다.')
+            flash('The user already exists')
     return render_template('auth/signup.html', form=form)
 
 @bp.route('/login/', methods=('GET', 'POST'))
@@ -34,9 +34,9 @@ def login():
         error = None
         user = User.query.filter_by(username=form.username.data).first()
         if not user:
-            error = "존재하지 않는 사용자입니다."
+            error = "The user doesn't exist"
         elif not check_password_hash(user.password, form.password.data):
-            error = "비밀번호가 올바르지 않습니다."
+            error = "Incorrect Password"
         if error is None:
             session.clear()
             session['user_id'] = user.id
